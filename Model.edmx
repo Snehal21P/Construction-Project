@@ -1,0 +1,568 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ConstructionProjectModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="TblAdmin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Passward" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TblManager">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+          <Property Name="Passward" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TblMaterial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="UnitofMeasurement" Type="int" />
+        </EntityType>
+        <EntityType Name="TblOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Material" Type="nvarchar" MaxLength="500" />
+          <Property Name="Quantity" Type="int" />
+          <Property Name="UnitofMeasurement" Type="int" />
+          <Property Name="Project" Type="int" />
+        </EntityType>
+        <EntityType Name="TblProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="550" />
+          <Property Name="Location" Type="nvarchar" MaxLength="50" />
+          <Property Name="Startdate" Type="date" />
+          <Property Name="Duedate" Type="date" />
+          <Property Name="AdminId" Type="int" />
+          <Property Name="Status" Type="int" />
+        </EntityType>
+        <EntityType Name="TblprojectImg">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Img1" Type="nvarchar" MaxLength="550" />
+          <Property Name="Img2" Type="nvarchar" MaxLength="550" />
+          <Property Name="img3" Type="nvarchar" MaxLength="550" />
+          <Property Name="img4" Type="nvarchar" MaxLength="550" />
+          <Property Name="img5" Type="nvarchar" MaxLength="550" />
+          <Property Name="ProjectId" Type="int" />
+        </EntityType>
+        <EntityType Name="TblStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="3000" />
+        </EntityType>
+        <EntityType Name="TblUOM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="TblUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Passward" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_TblMaterial_TblUOM">
+          <End Role="TblUOM" Type="Self.TblUOM" Multiplicity="0..1" />
+          <End Role="TblMaterial" Type="Self.TblMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblUOM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblMaterial">
+              <PropertyRef Name="UnitofMeasurement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblOrder_TblProject">
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="0..1" />
+          <End Role="TblOrder" Type="Self.TblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblProject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblOrder">
+              <PropertyRef Name="Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblOrder_TblUOM">
+          <End Role="TblUOM" Type="Self.TblUOM" Multiplicity="0..1" />
+          <End Role="TblOrder" Type="Self.TblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblUOM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblOrder">
+              <PropertyRef Name="UnitofMeasurement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblProject_TblAdmin">
+          <End Role="TblAdmin" Type="Self.TblAdmin" Multiplicity="0..1" />
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblAdmin">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblProject">
+              <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblProject_TblStatus">
+          <End Role="TblStatus" Type="Self.TblStatus" Multiplicity="0..1" />
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblProject">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblprojectImg_TblProject">
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="0..1" />
+          <End Role="TblprojectImg" Type="Self.TblprojectImg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblProject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblprojectImg">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConstructionProjectModelStoreContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblAdmin" EntityType="Self.TblAdmin" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblManager" EntityType="Self.TblManager" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblMaterial" EntityType="Self.TblMaterial" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblOrder" EntityType="Self.TblOrder" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblProject" EntityType="Self.TblProject" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblprojectImg" EntityType="Self.TblprojectImg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblStatus" EntityType="Self.TblStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblUOM" EntityType="Self.TblUOM" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TblUser" EntityType="Self.TblUser" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_TblMaterial_TblUOM" Association="Self.FK_TblMaterial_TblUOM">
+            <End Role="TblUOM" EntitySet="TblUOM" />
+            <End Role="TblMaterial" EntitySet="TblMaterial" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblOrder_TblProject" Association="Self.FK_TblOrder_TblProject">
+            <End Role="TblProject" EntitySet="TblProject" />
+            <End Role="TblOrder" EntitySet="TblOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblOrder_TblUOM" Association="Self.FK_TblOrder_TblUOM">
+            <End Role="TblUOM" EntitySet="TblUOM" />
+            <End Role="TblOrder" EntitySet="TblOrder" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblProject_TblAdmin" Association="Self.FK_TblProject_TblAdmin">
+            <End Role="TblAdmin" EntitySet="TblAdmin" />
+            <End Role="TblProject" EntitySet="TblProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblProject_TblStatus" Association="Self.FK_TblProject_TblStatus">
+            <End Role="TblStatus" EntitySet="TblStatus" />
+            <End Role="TblProject" EntitySet="TblProject" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblprojectImg_TblProject" Association="Self.FK_TblprojectImg_TblProject">
+            <End Role="TblProject" EntitySet="TblProject" />
+            <End Role="TblprojectImg" EntitySet="TblprojectImg" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConstructionProjectModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="TblAdmin">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Passward" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TblProjects" Relationship="Self.FK_TblProject_TblAdmin" FromRole="TblAdmin" ToRole="TblProject" />
+        </EntityType>
+        <EntityType Name="TblManager">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Passward" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="TblMaterial">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UnitofMeasurement" Type="Int32" />
+          <NavigationProperty Name="TblUOM" Relationship="Self.FK_TblMaterial_TblUOM" FromRole="TblMaterial" ToRole="TblUOM" />
+        </EntityType>
+        <EntityType Name="TblOrder">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Material" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Quantity" Type="Int32" />
+          <Property Name="UnitofMeasurement" Type="Int32" />
+          <Property Name="Project" Type="Int32" />
+          <NavigationProperty Name="TblProject" Relationship="Self.FK_TblOrder_TblProject" FromRole="TblOrder" ToRole="TblProject" />
+          <NavigationProperty Name="TblUOM" Relationship="Self.FK_TblOrder_TblUOM" FromRole="TblOrder" ToRole="TblUOM" />
+        </EntityType>
+        <EntityType Name="TblProject">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="Location" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Startdate" Type="DateTime" Precision="0" />
+          <Property Name="Duedate" Type="DateTime" Precision="0" />
+          <Property Name="AdminId" Type="Int32" />
+          <Property Name="Status" Type="Int32" />
+          <NavigationProperty Name="TblAdmin" Relationship="Self.FK_TblProject_TblAdmin" FromRole="TblProject" ToRole="TblAdmin" />
+          <NavigationProperty Name="TblOrders" Relationship="Self.FK_TblOrder_TblProject" FromRole="TblProject" ToRole="TblOrder" />
+          <NavigationProperty Name="TblStatu" Relationship="Self.FK_TblProject_TblStatus" FromRole="TblProject" ToRole="TblStatus" />
+          <NavigationProperty Name="TblprojectImgs" Relationship="Self.FK_TblprojectImg_TblProject" FromRole="TblProject" ToRole="TblprojectImg" />
+        </EntityType>
+        <EntityType Name="TblprojectImg">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Img1" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="Img2" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="img3" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="img4" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="img5" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="ProjectId" Type="Int32" />
+          <NavigationProperty Name="TblProject" Relationship="Self.FK_TblprojectImg_TblProject" FromRole="TblprojectImg" ToRole="TblProject" />
+        </EntityType>
+        <EntityType Name="TblStatu">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="3000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TblProjects" Relationship="Self.FK_TblProject_TblStatus" FromRole="TblStatus" ToRole="TblProject" />
+        </EntityType>
+        <EntityType Name="TblUOM">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TblMaterials" Relationship="Self.FK_TblMaterial_TblUOM" FromRole="TblUOM" ToRole="TblMaterial" />
+          <NavigationProperty Name="TblOrders" Relationship="Self.FK_TblOrder_TblUOM" FromRole="TblUOM" ToRole="TblOrder" />
+        </EntityType>
+        <EntityType Name="TblUser">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Passward" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_TblProject_TblAdmin">
+          <End Role="TblAdmin" Type="Self.TblAdmin" Multiplicity="0..1" />
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblAdmin">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblProject">
+              <PropertyRef Name="AdminId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblMaterial_TblUOM">
+          <End Role="TblUOM" Type="Self.TblUOM" Multiplicity="0..1" />
+          <End Role="TblMaterial" Type="Self.TblMaterial" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblUOM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblMaterial">
+              <PropertyRef Name="UnitofMeasurement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblOrder_TblProject">
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="0..1" />
+          <End Role="TblOrder" Type="Self.TblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblProject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblOrder">
+              <PropertyRef Name="Project" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblOrder_TblUOM">
+          <End Role="TblUOM" Type="Self.TblUOM" Multiplicity="0..1" />
+          <End Role="TblOrder" Type="Self.TblOrder" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblUOM">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblOrder">
+              <PropertyRef Name="UnitofMeasurement" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblProject_TblStatus">
+          <End Role="TblStatus" Type="Self.TblStatu" Multiplicity="0..1" />
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblProject">
+              <PropertyRef Name="Status" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TblprojectImg_TblProject">
+          <End Role="TblProject" Type="Self.TblProject" Multiplicity="0..1" />
+          <End Role="TblprojectImg" Type="Self.TblprojectImg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TblProject">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TblprojectImg">
+              <PropertyRef Name="ProjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConstructionProjectEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="TblAdmins" EntityType="Self.TblAdmin" />
+          <EntitySet Name="TblManagers" EntityType="Self.TblManager" />
+          <EntitySet Name="TblMaterials" EntityType="Self.TblMaterial" />
+          <EntitySet Name="TblOrders" EntityType="Self.TblOrder" />
+          <EntitySet Name="TblProjects" EntityType="Self.TblProject" />
+          <EntitySet Name="TblprojectImgs" EntityType="Self.TblprojectImg" />
+          <EntitySet Name="TblStatus" EntityType="Self.TblStatu" />
+          <EntitySet Name="TblUOMs" EntityType="Self.TblUOM" />
+          <EntitySet Name="TblUsers" EntityType="Self.TblUser" />
+          <AssociationSet Name="FK_TblProject_TblAdmin" Association="Self.FK_TblProject_TblAdmin">
+            <End Role="TblAdmin" EntitySet="TblAdmins" />
+            <End Role="TblProject" EntitySet="TblProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblMaterial_TblUOM" Association="Self.FK_TblMaterial_TblUOM">
+            <End Role="TblUOM" EntitySet="TblUOMs" />
+            <End Role="TblMaterial" EntitySet="TblMaterials" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblOrder_TblProject" Association="Self.FK_TblOrder_TblProject">
+            <End Role="TblProject" EntitySet="TblProjects" />
+            <End Role="TblOrder" EntitySet="TblOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblOrder_TblUOM" Association="Self.FK_TblOrder_TblUOM">
+            <End Role="TblUOM" EntitySet="TblUOMs" />
+            <End Role="TblOrder" EntitySet="TblOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblProject_TblStatus" Association="Self.FK_TblProject_TblStatus">
+            <End Role="TblStatus" EntitySet="TblStatus" />
+            <End Role="TblProject" EntitySet="TblProjects" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TblprojectImg_TblProject" Association="Self.FK_TblprojectImg_TblProject">
+            <End Role="TblProject" EntitySet="TblProjects" />
+            <End Role="TblprojectImg" EntitySet="TblprojectImgs" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConstructionProjectModelStoreContainer" CdmEntityContainer="ConstructionProjectEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblAdmins">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblAdmin">
+              <MappingFragment StoreEntitySet="TblAdmin">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Passward" ColumnName="Passward" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblManagers">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblManager">
+              <MappingFragment StoreEntitySet="TblManager">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Passward" ColumnName="Passward" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblMaterials">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblMaterial">
+              <MappingFragment StoreEntitySet="TblMaterial">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="UnitofMeasurement" ColumnName="UnitofMeasurement" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblOrders">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblOrder">
+              <MappingFragment StoreEntitySet="TblOrder">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Material" ColumnName="Material" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="UnitofMeasurement" ColumnName="UnitofMeasurement" />
+                <ScalarProperty Name="Project" ColumnName="Project" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblProjects">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblProject">
+              <MappingFragment StoreEntitySet="TblProject">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+                <ScalarProperty Name="Startdate" ColumnName="Startdate" />
+                <ScalarProperty Name="Duedate" ColumnName="Duedate" />
+                <ScalarProperty Name="AdminId" ColumnName="AdminId" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblprojectImgs">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblprojectImg">
+              <MappingFragment StoreEntitySet="TblprojectImg">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Img1" ColumnName="Img1" />
+                <ScalarProperty Name="Img2" ColumnName="Img2" />
+                <ScalarProperty Name="img3" ColumnName="img3" />
+                <ScalarProperty Name="img4" ColumnName="img4" />
+                <ScalarProperty Name="img5" ColumnName="img5" />
+                <ScalarProperty Name="ProjectId" ColumnName="ProjectId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblStatus">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblStatu">
+              <MappingFragment StoreEntitySet="TblStatus">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblUOMs">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblUOM">
+              <MappingFragment StoreEntitySet="TblUOM">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TblUsers">
+            <EntityTypeMapping TypeName="ConstructionProjectModel.TblUser">
+              <MappingFragment StoreEntitySet="TblUser">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Passward" ColumnName="Passward" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
